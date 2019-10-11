@@ -1,0 +1,1169 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Bash Scripting</title>
+  <style type="text/css">
+    /* Color Palette Based on Monokai
+
+white       : #fafafa
+light grey  : #efefef
+grey        : #75715e
+dark grey   : #272822
+black       : #191919
+
+light blue  : #66d9ef
+blue        : #1db4d0
+lavender    : #bf79db
+magenta     : #f92672
+light green : #a6e22e
+*/
+
+/* Local Fonts */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: url('fonts/opensans/300.woff2') format('woff2'),
+       url('fonts/opensans/300.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/opensans/400.woff2') format('woff2'),
+       url('fonts/opensans/400.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('fonts/opensans/600.woff2') format('woff2'),
+       url('fonts/opensans/600.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/opensans/700.woff2') format('woff2'),
+       url('fonts/opensans/700.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 800;
+  src: url('fonts/opensans/800.woff2') format('woff2'),
+       url('fonts/opensans/800.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 300;
+  src: url('fonts/opensans/300i.woff2') format('woff2'),
+       url('fonts/opensans/300i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('fonts/opensans/400i.woff2') format('woff2'),
+       url('fonts/opensans/400i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: url('fonts/opensans/600i.woff2') format('woff2'),
+       url('fonts/opensans/600i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 700;
+  src: url('fonts/opensans/700i.woff2') format('woff2'),
+       url('fonts/opensans/700i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 800;
+  src: url('fonts/opensans/800i.woff2') format('woff2'),
+       url('fonts/opensans/800i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/merriweather/400.woff2') format('woff2'),
+       url('fonts/merriweather/400.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/merriweather/700.woff2') format('woff2'),
+       url('fonts/merriweather/700.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: normal;
+  font-weight: 900;
+  src: url('fonts/merriweather/900.woff2') format('woff2'),
+       url('fonts/merriweather/900.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: italic;
+  font-weight: 400;
+  src: url('fonts/merriweather/400i.woff2') format('woff2'),
+       url('fonts/merriweather/400i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: italic;
+  font-weight: 700;
+  src: url('fonts/merriweather/700i.woff2') format('woff2'),
+       url('fonts/merriweather/700i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Merriweather';
+  font-style: italic;
+  font-weight: 900;
+  src: url('fonts/merriweather/900i.woff2') format('woff2'),
+       url('fonts/merriweather/900i.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/fira/400.woff2') format('woff2'),
+       url('fonts/fira/400.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: 500;
+  src: url('fonts/fira/500.woff2') format('woff2'),
+       url('fonts/fira/500.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Fira Mono';
+  font-style: normal;
+  font-weight: 700;
+  src: url('fonts/fira/700.woff2') format('woff2'),
+       url('fonts/fira/700.woff') format('woff');
+}
+
+/* Theme Styles */
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 100%;
+  color: #fafafa;
+  background-color: #191919;
+}
+
+/* Custom Slide Styles */
+#slide-1 {
+  background: #222 url(wireball.png) center center no-repeat;
+  background-size: cover;
+}
+
+#slide-1 h1 {
+  text-shadow: 1px 2px 4px #191919;
+}
+
+#slide-1 p {
+  text-shadow: 1px 1px 1px #191919;
+}
+
+.center {
+  text-align: center;
+}
+
+img.badge {
+  height: 128px;
+  width: 128px !important;
+  border-radius: 50% !important;
+}
+
+/* Presentation Styles */
+.slide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 100px;
+}
+
+.slide-content {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0 auto;
+  font-size: 200%;
+  font-weight: 200;
+  line-height: 1.375;
+  overflow: hidden;
+}
+
+.slide-content img {
+  width: 100%;
+  border-radius: 3px;
+}
+
+.controls {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.arrow {
+  float: left;
+  height: 0;
+  width: 0;
+  margin-right: 15px;
+  border: 15px solid #272822;
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.prev {
+  border-top-color: transparent;
+  border-right-width: 25px;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-left-width: 0;
+}
+
+.next {
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-right-width: 0;
+  border-bottom-color: transparent;
+  border-left-width: 25px;
+}
+
+.prev:hover {
+  border-right-color: #efefef;
+  cursor: pointer;
+}
+
+.next:hover {
+  border-left-color: #efefef;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Merriweather', serif;
+}
+
+h1 {
+  margin: 170px 0 0;
+  font-size: 300%;
+  text-align: center;
+  line-height: 1.2;
+}
+
+h2 {
+  margin: 5px 0;
+  font-size: 100%;
+  font-weight: 200;
+  text-align: center;
+  line-height: 1.2;
+}
+
+h3 {
+  margin: 0;
+  padding-bottom: 15px;
+  font-size: 140%;
+  line-height: 1.2;
+  border-bottom: 2px ridge #fafafa;
+}
+
+ul {
+  padding: 20px 0 0 60px;
+  font-weight: 200;
+  line-height: 1.375;
+}
+
+blockquote {
+  padding-left: 20px;
+  margin-left: 0;
+  background: #272822;
+  border-left: 5px solid #efefef;
+  border-radius: 0 3px 3px 0;
+}
+
+blockquote p {
+  padding: .5em;
+  color: #efefef;
+}
+
+.left {
+  float: left;
+  width: 48%;
+}
+
+.right {
+  float: right;
+  width: 48%;
+}
+
+.author h1 {
+  margin-bottom: 30px;
+  font-size: 170%;
+  font-weight: 200;
+  text-align: center;
+}
+
+.author h3 {
+  font-size: 95%;
+  font-weight: 100;
+  text-align: center;
+  border: none;
+}
+
+.author h3.twitter::before {
+  content: 'Twitter: ';
+}
+
+.author h3.github::before {
+  content: 'Github: ';
+}
+
+.author h3.email::before {
+  content: 'Email: ';
+}
+
+.author h3.url::before {
+  content: 'Web: ';
+}
+
+a {
+  text-decoration: none;
+  color: #66d9ef;
+}
+
+a:hover {
+  color: #66d9ef;
+  border-bottom: 1px solid #66d9ef;
+}
+
+hr {
+  border: 1px solid #efefef;
+}
+
+pre {
+  font-size: 75%;
+  line-height: 1.3;
+}
+
+table td,
+table th {
+  padding-right: 3em;
+  text-align: left;
+}
+
+.progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+}
+
+.progress-bar {
+  height: 3px;
+  width: 0;
+  background-color: #a6e22e;
+  -webkit-transition: width .15s ease-out;
+     -moz-transition: width .15s ease-out;
+       -o-transition: width .15s ease-out;
+          transition: width .15s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Code Highlighting */
+code {
+  padding: .1em .35em;
+  font-family: 'Fira Mono';
+  color: #fafafa;
+  background-color: #272822;
+  border-radius: 3px;
+}
+
+pre code {
+  display: block;
+  padding: .5em;
+  font-family: 'Fira Mono';
+  font-weight: 400;
+  overflow-y: hidden;
+  background: #272822;
+}
+
+pre .tag,
+pre .tag .title,
+pre .keyword,
+pre .literal,
+pre .change,
+pre .winutils,
+pre .flow,
+pre .lisp .title,
+pre .clojure .built_in,
+pre .nginx .title,
+pre .tex .special {
+  color: #f92672;
+}
+
+pre code {
+  color: #75715e;
+}
+
+pre code .constant {
+  color: #66d9ef;
+}
+
+pre .class .title {
+  color: #fafafa;
+}
+
+pre .attribute,
+pre .symbol,
+pre .symbol .string,
+pre .value,
+pre .regexp {
+  color: #bf79db;
+}
+
+pre .tag .value,
+pre .string,
+pre .subst,
+pre .title,
+pre .haskell .type,
+pre .preprocessor,
+pre .ruby .class .parent,
+pre .built_in,
+pre .sql .aggregate,
+pre .django .template_tag,
+pre .django .variable,
+pre .smalltalk .class,
+pre .javadoc,
+pre .django .filter .argument,
+pre .smalltalk .localvars,
+pre .smalltalk .array,
+pre .attr_selector,
+pre .pseudo,
+pre .addition,
+pre .stream,
+pre .envvar,
+pre .apache .tag,
+pre .apache .cbracket,
+pre .tex .command,
+pre .prompt {
+  color: #a6e22e;
+}
+
+pre .comment,
+pre .java .annotation,
+pre .python .decorator,
+pre .template_comment,
+pre .pi,
+pre .doctype,
+pre .deletion,
+pre .shebang,
+pre .apache .sqbracket,
+pre .tex .formula {
+  color: #75715e;
+}
+
+pre .keyword,
+pre .literal,
+pre .css .id,
+pre .phpdoc,
+pre .title,
+pre .haskell .type,
+pre .vbscript .built_in,
+pre .sql .aggregate,
+pre .rsl .built_in,
+pre .smalltalk .class,
+pre .diff .header,
+pre .chunk,
+pre .winutils,
+pre .bash .variable,
+pre .apache .tag,
+pre .tex .special,
+pre .request,
+pre .status {
+  /* font-weight: 600; */
+}
+
+pre .coffeescript .javascript,
+pre .javascript .xml,
+pre .tex .formula,
+pre .xml .javascript,
+pre .xml .vbscript,
+pre .xml .css,
+pre .xml .cdata {
+  opacity: .5;
+}
+
+/* Responsiveness */
+
+@media (max-width: 850px) {
+
+  body {
+    font-size: 70%;
+  }
+
+  .slide-content {
+    width: auto;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 3px;
+  }
+
+  h1 {
+    margin-top: 120px;
+  }
+
+  .prev,
+  .prev:hover {
+    border-right-color: rgba(135, 135, 135, .5);
+  }
+
+  .next,
+  .next:hover {
+    border-left-color: rgba(135, 135, 135, .5);
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    overflow: hidden;
+    font-size: 50%;
+  }
+
+  .slide-content {
+    height: 340px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  h1 {
+    margin-top: 50px;
+  }
+
+  ul {
+    padding-left: 25px;
+  }
+}
+
+@media print {
+  * {
+    -webkit-print-color-adjust: exact;
+  }
+
+  @page {
+    size: letter;
+  }
+
+  .hidden {
+    display: inline;
+  }
+
+  html {
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+  }
+
+  body {
+    float: none !important;
+    padding: 0;
+    margin: 0 auto !important;
+    overflow: visible;
+    font-size: 52%;
+    background: none !important;
+    border: 0;
+  }
+
+  .progress,
+  .controls {
+    display: none;
+  }
+
+  .slide {
+    position: static;
+  }
+
+  .slide-content {
+    margin-top: 0;
+    margin-bottom: 40px;
+    height: 3.5in;
+    overflow: visible;
+    border: 1px solid #222;
+  }
+
+  .slide:nth-child(even) {
+    /* 2 slides per page */
+    page-break-before: always;
+  }
+}
+
+  </style>
+</head>
+<body>
+    <div class="progress">
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="slide" id="slide-1">
+    <section class="slide-content"><h1 id="bash-scripting-basics">Bash Scripting Basics</h1>
+<h2 id="a-quick-look-at-bash-scripting">A quick look at bash scripting</h2>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-2">
+    <section class="slide-content"><h3 id="contents">Contents</h3>
+<ul>
+<li>Hello world</li>
+<li>Variables</li>
+<li>Arithmetic</li>
+<li>Conditionals</li>
+<li>Loops</li>
+<li>Exit codes</li>
+</ul>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-3">
+    <section class="slide-content"><h3 id="hello-world">Hello World</h3>
+<p><em>helloWorld.sh</em>:</p>
+<pre><code class="lang-bash"><span class="hljs-comment">#!/bin/bash             # known as a sha-bang, this tells your shell that this is a bash script</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Hello World!"</span>     <span class="hljs-comment"># print soem text to screen</span>
+</code></pre>
+<p>Try to run the script:</p>
+<pre><code class="lang-bash">$ ./helloWorld.sh
+bash: ./helloWorld.sh: Permission denied
+</code></pre>
+<p>Why didnt it run?  - <em>file permissions dont allow execution!</em></p>
+<pre><code class="lang-bash">$ ./helloWorld.sh
+bash: ./helloWorld.sh: Permission denied
+$ ls -l helloWorld.sh
+-rw-r--r--  1 mmulhern  staff  32 Jul 15 09:20 helloWorld.sh
+$ chmod +x helloWorld.sh
+$ ls -l helloWorld.sh
+-rwxr-xr-x  1 mmulhern  staff  32 Jul 15 09:20 helloWorld.sh
+$ ./helloWorld.sh
+Hello World!
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-4">
+    <section class="slide-content"><h3 id="variables">Variables</h3>
+<p><em>variables.sh:</em></p>
+<pre><code class="lang-bash"><span class="hljs-meta">#!/bin/bash</span>
+NAME=<span class="hljs-string">"Dave"</span>                              <span class="hljs-comment"># assign 'Dave' to variable 'NAME'</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"I can't let you do that <span class="hljs-variable">${NAME}</span>"</span>   <span class="hljs-comment"># curly braces, {} are used to isolate variable name from other text</span>
+</code></pre>
+<p>Output (don&#39;t forget to <code>chmod +x</code> it!):</p>
+<pre><code class="lang-bash">$ ./variables.sh
+I cant <span class="hljs-built_in">let</span> you <span class="hljs-keyword">do</span> that Dave
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-5">
+    <section class="slide-content"><h3 id="arithmetic">Arithmetic</h3>
+<ul>
+<li>By default, bash treats every variable as a string.<ul>
+<li>To perform meaningful operations on variables, it may be necessary to perform <strong>arithmetic expansion</strong>.</li>
+<li>done with <code>$((  ))</code></li>
+</ul>
+</li>
+</ul>
+<p><em>arithmetic.sh</em></p>
+<pre><code class="lang-bash"><span class="hljs-meta">#!/bin/bash</span>
+x=100
+<span class="hljs-built_in">echo</span> x = <span class="hljs-variable">$x</span>
+<span class="hljs-built_in">echo</span> x + 1 without expansion: <span class="hljs-variable">$x</span> + 1    <span class="hljs-comment"># wihtout expansion, x is just a string</span>
+<span class="hljs-built_in">echo</span> x + 1 = $((x + 1))                 <span class="hljs-comment"># double braces, (()), used to perform 'arithmetic expansion' on x (treat it as a number)</span>
+<span class="hljs-built_in">echo</span> incrementing x to $((x += 1))      <span class="hljs-comment"># increment value of x (and return it)</span>
+<span class="hljs-built_in">echo</span> x is now <span class="hljs-built_in">set</span> to <span class="hljs-variable">$x</span>
+((x *= 2))                              <span class="hljs-comment"># note how you don't need the $ if youre not using the value at the time.</span>
+<span class="hljs-built_in">echo</span> x is now <span class="hljs-built_in">set</span> to <span class="hljs-variable">$x</span>
+</code></pre>
+<pre><code class="lang-bash">./$ ./arithmetic.sh
+x = 100
+x + 1 without expansion: 100 + 1
+x + 1 = 101
+incrementing x to 101
+x is now <span class="hljs-built_in">set</span> to 101
+x is now <span class="hljs-built_in">set</span> to 202
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-6">
+    <section class="slide-content"><h3 id="conditionals">Conditionals</h3>
+<p>Used for flow control in scripts:</p>
+<pre><code class="lang-bash"><span class="hljs-keyword">if</span> [ SOMETHING ]
+<span class="hljs-keyword">then</span>
+    DO SOMETHING
+<span class="hljs-keyword">elif</span> [SOMETHING ELSE]
+    DO SOMETHING ELSE
+<span class="hljs-keyword">else</span>
+    DO ANOTHER DIFFERNET THING
+<span class="hljs-keyword">fi</span>
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-7">
+    <section class="slide-content"><h3 id="conditionals">Conditionals</h3>
+<p><em>common conditions:</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>File CHECKS</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">-r FILE</td>
+<td style="text-align:left">Check if FILE is readable.</td>
+</tr>
+<tr>
+<td style="text-align:left">-w FILE</td>
+<td style="text-align:left">Check if FILE is writable.</td>
+</tr>
+<tr>
+<td style="text-align:left">-x FILE</td>
+<td style="text-align:left">Check if we have execute access to FILE.</td>
+</tr>
+<tr>
+<td style="text-align:left">-f FILE</td>
+<td style="text-align:left">Check if FILE is an ordinary FILE (not a directory, a device FILE, etc.)</td>
+</tr>
+<tr>
+<td style="text-align:left">-s FILE</td>
+<td style="text-align:left">Check if FILE has size greater than 0.</td>
+</tr>
+<tr>
+<td style="text-align:left">-d FILE</td>
+<td style="text-align:left">Check if FILE is a directory.</td>
+</tr>
+<tr>
+<td style="text-align:left">-e FILE</td>
+<td style="text-align:left">Check if FILE exists.  Is true even if FILE is a directory.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Arithmetic Checks</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -eq n2</td>
+<td style="text-align:left">Check to see if n1 equals n2.</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -ne n2</td>
+<td style="text-align:left">Check to see if n1 is not equal to n2.</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -lt n2</td>
+<td style="text-align:left">Check to see if n1 &lt; n2.i</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -le n2</td>
+<td style="text-align:left">Check to see if n1 &lt;= n2.</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -gt n2</td>
+<td style="text-align:left">Check to see if n1 &gt; n2.</td>
+</tr>
+<tr>
+<td style="text-align:left">n1 -ge n2</td>
+<td style="text-align:left">Check to see if n1 &gt;= n2.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>String Checks</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">s1 = s2</td>
+<td style="text-align:left">Check if s1 equals s2.</td>
+</tr>
+<tr>
+<td style="text-align:left">s1 != s2</td>
+<td style="text-align:left">Check if s1 is not equal to s2.</td>
+</tr>
+<tr>
+<td style="text-align:left">-z s1</td>
+<td style="text-align:left">Check if s1 has size 0.</td>
+</tr>
+<tr>
+<td style="text-align:left">-n s1</td>
+<td style="text-align:left">Check if s2 has nonzero size.</td>
+</tr>
+<tr>
+<td style="text-align:left">s1</td>
+<td style="text-align:left">Check if s1 is not the empty string.</td>
+</tr>
+</tbody>
+</table>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-8">
+    <section class="slide-content"><h3 id="conditionals">Conditionals</h3>
+<p><em>conditionals.sh</em></p>
+<pre><code class="lang-bash"><span class="hljs-meta">#!/bin/bash</span>
+STR=wellHelloThereEveryone!
+STR_TO_COMPARE_TO=Hello
+NUM=10
+FILE=<span class="hljs-string">"/etc/redhat-release"</span>
+
+
+<span class="hljs-comment"># File checks</span>
+<span class="hljs-keyword">if</span> [ -r <span class="hljs-variable">$FILE</span> ]                         <span class="hljs-comment"># condition to meet</span>
+<span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$FILE</span> is readible!"</span>           <span class="hljs-comment"># action if condition met</span>
+<span class="hljs-keyword">else</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$FILE</span> is not readible!"</span>       <span class="hljs-comment"># action if condition not met</span>
+<span class="hljs-keyword">fi</span>                                      <span class="hljs-comment"># you need to 'close' the conditional statement</span>
+
+<span class="hljs-comment"># Arithmetic checks</span>
+<span class="hljs-keyword">if</span> [ <span class="hljs-variable">$NUM</span> -gt 5 ]
+<span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"<span class="hljs-variable">$NUM</span> is greater than five!"</span>
+<span class="hljs-keyword">else</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"I can't count"</span>
+<span class="hljs-keyword">fi</span>
+
+<span class="hljs-comment"># String checks</span>
+<span class="hljs-keyword">if</span> [[ <span class="hljs-variable">$STR</span> == <span class="hljs-variable">$STR_TO_COMPARE_TO</span> ]]             <span class="hljs-comment"># Note the double brackets, [[]] needed for strings</span>
+<span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$STR</span>
+<span class="hljs-keyword">elif</span> [[ <span class="hljs-variable">$STR</span> == *<span class="hljs-variable">${STR_TO_COMPARE_TO}</span>* ]]       <span class="hljs-comment"># Second condition to check for if first is not met</span>
+<span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-variable">$STR</span> does contain <span class="hljs-variable">$STR_TO_COMPARE_TO</span>
+<span class="hljs-keyword">else</span>                                            <span class="hljs-comment"># Action if no conditions met</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"no match"</span>
+<span class="hljs-keyword">fi</span>
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-9">
+    <section class="slide-content"><h3 id="loops">Loops</h3>
+<ul>
+<li>3 main types available:<ul>
+<li>For</li>
+<li>While</li>
+<li>Until</li>
+</ul>
+</li>
+<li>Carry out set of instructions repeatidly until condition is met.</li>
+</ul>
+<pre><code class="lang-bash"><span class="hljs-meta">#!/bin/bash</span>
+COUNTER=0
+<span class="hljs-keyword">while</span> [  <span class="hljs-variable">$COUNTER</span> -lt 5 ]; <span class="hljs-keyword">do</span>               <span class="hljs-comment"># condition</span>
+    <span class="hljs-built_in">echo</span> WHILE: The counter is <span class="hljs-variable">$COUNTER</span>     <span class="hljs-comment"># action</span>
+    ((COUNTER += 1))                        <span class="hljs-comment"># increment COUNTER</span>
+<span class="hljs-keyword">done</span>                                        <span class="hljs-comment"># close loop</span>
+
+
+until [  <span class="hljs-variable">$COUNTER</span> = 0 ]; <span class="hljs-keyword">do</span>                 <span class="hljs-comment"># condition</span>
+    <span class="hljs-built_in">echo</span> UNTIL: The counter is <span class="hljs-variable">$COUNTER</span>     <span class="hljs-comment"># action</span>
+    ((COUNTER -= 1))                        <span class="hljs-comment"># decrement COUNTER</span>
+<span class="hljs-keyword">done</span>                                        <span class="hljs-comment"># close loop</span>
+
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> {15..10}; <span class="hljs-keyword">do</span>           <span class="hljs-comment"># range (note that its INCLUSIVE)</span>
+    <span class="hljs-built_in">echo</span> FOR: <span class="hljs-variable">$x</span>                <span class="hljs-comment"># action</span>
+<span class="hljs-keyword">done</span>                            <span class="hljs-comment"># close loop</span>
+</code></pre>
+<pre><code class="lang-bash">WHILE: The counter is 0
+WHILE: The counter is 1
+WHILE: The counter is 2
+WHILE: The counter is 3
+WHILE: The counter is 4
+UNTIL: The counter is 5
+UNTIL: The counter is 4
+UNTIL: The counter is 3
+UNTIL: The counter is 2
+UNTIL: The counter is 1
+FOR: 15
+FOR: 14
+FOR: 13
+FOR: 12
+FOR: 11
+FOR: 10
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-10">
+    <section class="slide-content"><h3 id="loops">Loops</h3>
+<p>For loops can be extremely useful as the &quot;counter&quot; doesnt have to be a number, it can be an arbitrary list of items:</p>
+<p><em>forItems.sh</em>:</p>
+<pre><code class="lang-bash"><span class="hljs-meta">#!/bin/bash</span>
+<span class="hljs-comment"># backticks (``) can be used to perform other commands and use their output</span>
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> `ls`; <span class="hljs-keyword">do</span>               <span class="hljs-comment"># for each line of output from `ls` command</span>
+    <span class="hljs-built_in">echo</span> Found: <span class="hljs-variable">$x</span>              <span class="hljs-comment"># action</span>
+<span class="hljs-keyword">done</span>                            <span class="hljs-comment"># close loop</span>
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-11">
+    <section class="slide-content"><h3 id="exit-codes">Exit codes</h3>
+<ul>
+<li>All the scripts shown so far are basicallly a list of commands.<ul>
+<li>Every line is carried out regardless of what happened before.</li>
+</ul>
+</li>
+<li><em>So what if we want to check if something was sucessful?</em><ul>
+<li>Return codes can be used!</li>
+</ul>
+</li>
+</ul>
+<p><em>typical return codes in bash</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">Sucess</td>
+<td style="text-align:left"><code>ls /tmp</code></td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">Catchall used for generall errors</td>
+<td style="text-align:left"><code>let &quot;var1 = 1/0&quot;</code></td>
+</tr>
+<tr>
+<td style="text-align:left">126</td>
+<td style="text-align:left">Command could not be executed (permissions problem usually)</td>
+<td style="text-align:left"><code>/dev/null</code></td>
+</tr>
+<tr>
+<td style="text-align:left">127</td>
+<td style="text-align:left">Command not found</td>
+<td style="text-align:left"><code>this_isnt_a_command</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="lang-bash"><span class="hljs-meta">#!/bin/bash
+</span>
+<span class="hljs-comment"># try to do something here...</span>
+<span class="hljs-built_in">echo</span> hello &gt; /etc/passwd
+RET_CODE=$?                 <span class="hljs-comment"># IMMEDIADLY grab $? before it's overwritten</span>
+
+<span class="hljs-keyword">if</span> [ <span class="hljs-variable">$RET_CODE</span> -gt 0 ]      <span class="hljs-comment"># check value of RET_CODE for success/failure</span>
+<span class="hljs-keyword">then</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Fail! RET_CODE:<span class="hljs-variable">$RET_CODE</span>"</span>
+<span class="hljs-keyword">else</span>
+    <span class="hljs-built_in">echo</span> <span class="hljs-string">"Success!"</span>
+<span class="hljs-keyword">fi</span>
+</code></pre>
+<pre><code class="lang-bash">$ ./retCodes.sh
+./retCodes.sh: line 4: /etc/passwd: Permission denied
+Fail! RET_CODE:1
+</code></pre>
+</section>
+  </div>
+  <div class="slide hidden author-slide" id="slide-12">
+    <section class="slide-content"><div class="author">
+  <h1 class="name">Matt Mulhern</h1>
+    <h3 class="email">
+      <a href="mailto:mattmulhern01@gmail.com">mattmulhern01@gmail.com</a>
+    </h3>
+</div>
+</section>
+  </div>
+
+  <div class="controls">
+    <div class="arrow prev"></div>
+    <div class="arrow next"></div>
+  </div>
+
+
+  <script type="text/javascript">
+    /**
+ * Returns the current page number of the presentation.
+ */
+function currentPosition() {
+  return parseInt(document.querySelector('.slide:not(.hidden)').id.slice(6));
+}
+
+
+/**
+ * Navigates forward n pages
+ * If n is negative, we will navigate in reverse
+ */
+function navigate(n) {
+  var position = currentPosition();
+  var numSlides = document.getElementsByClassName('slide').length;
+
+  /* Positions are 1-indexed, so we need to add and subtract 1 */
+  var nextPosition = (position - 1 + n) % numSlides + 1;
+
+  /* Normalize nextPosition in-case of a negative modulo result */
+  nextPosition = (nextPosition - 1 + numSlides) % numSlides + 1;
+
+  document.getElementById('slide-' + position).classList.add('hidden');
+  document.getElementById('slide-' + nextPosition).classList.remove('hidden');
+
+  updateProgress();
+  updateURL();
+  updateTabIndex();
+}
+
+
+/**
+ * Updates the current URL to include a hashtag of the current page number.
+ */
+function updateURL() {
+  window.history.replaceState({} , null, '#' + currentPosition());
+}
+
+
+/**
+ * Sets the progress indicator.
+ */
+function updateProgress() {
+  var progressBar = document.querySelector('.progress-bar');
+
+  if (progressBar !== null) {
+    var numSlides = document.getElementsByClassName('slide').length;
+    var position = currentPosition() - 1;
+    var percent = (numSlides === 1) ? 100 : 100 * position / (numSlides - 1);
+    progressBar.style.width = percent.toString() + '%';
+  }
+}
+
+
+/**
+ * Removes tabindex property from all links on the current slide, sets
+ * tabindex = -1 for all links on other slides. Prevents slides from appearing
+ * out of control.
+ */
+function updateTabIndex() {
+  var allLinks = document.querySelectorAll('.slide a');
+  var position = currentPosition();
+  var currentPageLinks = document.getElementById('slide-' + position).querySelectorAll('a');
+  var i;
+
+  for (i = 0; i < allLinks.length; i++) {
+    allLinks[i].setAttribute('tabindex', -1);
+  }
+
+  for (i = 0; i < currentPageLinks.length; i++) {
+    currentPageLinks[i].removeAttribute('tabindex');
+  }
+}
+
+/**
+ * Determines whether or not we are currently in full screen mode
+ */
+function isFullScreen() {
+  return document.fullscreenElement ||
+         document.mozFullScreenElement ||
+         document.webkitFullscreenElement ||
+         document.msFullscreenElement;
+}
+
+/**
+ * Toggle fullScreen mode on document element.
+ * Works on chrome (>= 15), firefox (>= 9), ie (>= 11), opera(>= 12.1), safari (>= 5).
+ */
+function toggleFullScreen() {
+  /* Convenient renames */
+  var docElem = document.documentElement;
+  var doc = document;
+
+  docElem.requestFullscreen =
+      docElem.requestFullscreen ||
+      docElem.msRequestFullscreen ||
+      docElem.mozRequestFullScreen ||
+      docElem.webkitRequestFullscreen.bind(docElem, Element.ALLOW_KEYBOARD_INPUT);
+
+  doc.exitFullscreen =
+      doc.exitFullscreen ||
+      doc.msExitFullscreen ||
+      doc.mozCancelFullScreen ||
+      doc.webkitExitFullscreen;
+
+  isFullScreen() ? doc.exitFullscreen() : docElem.requestFullscreen();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Update the tabindex to prevent weird slide transitioning
+  updateTabIndex();
+
+  // If the location hash specifies a page number, go to it.
+  var page = window.location.hash.slice(1);
+  if (page) {
+    navigate(parseInt(page) - 1);
+  }
+
+  document.onkeydown = function (e) {
+    var kc = e.keyCode;
+
+    // left, down, H, J, backspace, PgUp - BACK
+    // up, right, K, L, space, PgDn - FORWARD
+    // enter - FULLSCREEN
+    if (kc === 37 || kc === 40 || kc === 8 || kc === 72 || kc === 74 || kc === 33) {
+      navigate(-1);
+    } else if (kc === 38 || kc === 39 || kc === 32 || kc === 75 || kc === 76 || kc === 34) {
+      navigate(1);
+    } else if (kc === 13) {
+      toggleFullScreen();
+    }
+  };
+
+  if (document.querySelector('.next') && document.querySelector('.prev')) {
+    document.querySelector('.next').onclick = function (e) {
+      e.preventDefault();
+      navigate(1);
+    };
+
+    document.querySelector('.prev').onclick = function (e) {
+      e.preventDefault();
+      navigate(-1);
+    };
+  }
+});
+
+  </script>
+</body>
+</html>
